@@ -1,12 +1,12 @@
 import express from 'express';
-import { register } from '../controller/auth';
+import { login, register } from '../controller/auth';
 
 
 const router = express.Router();
 
 router.post('/register',  register);
 
-// router.post('/login', );
+router.post('/login', login);
 
 // router.post('/refresh-token', );
 

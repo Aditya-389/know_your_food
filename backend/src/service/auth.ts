@@ -25,3 +25,25 @@ export const registerUser = async(name: string, email: string, password: string)
     return { user, accessToken, refreshToken };
 
 }
+
+export const loginUser = async(email: string, password: string) => {
+    const user = await findUserByEmail(email);
+
+    if(!user) {
+        throw new ApiError(401, 'Invalid Email');
+    }
+
+    const isValid = await comparePassword(password, user.password_hash);
+    if(!isValid) {
+        throw new ApiError(401, 'Invalid Password');
+    }
+
+    const accessToken = generateAccessToken({ userId: user.id, isAdmin: user.is_admin });
+    const refreshToken = generateRefreshToken(user.id);
+
+    const refreshTokenHash = hashToken(refreshToken);
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    await storeRefreshToken(user.id, refreshToken, expiresAt);
+
+    return { user, accessToken, refreshToken };
+}
