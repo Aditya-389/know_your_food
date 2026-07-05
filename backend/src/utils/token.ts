@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { config } from './envirnoment';
+import { config } from '../config/envirnoment';
 
 interface AccessTokenPayload {
   userId: number;
