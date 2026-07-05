@@ -1,7 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { authLoginSchmea, authRegisterSchema } from "../validators/auth.validator";
-import { registerUser, loginUser } from "../service/auth";
+import { 
+        registerUser, 
+        loginUser, 
+        rotateRefreshToken 
+    } from "../service/auth";
+
 import { setAuthCookies } from "../config/cookie";
+import { ApiError } from "../utils/apiError";
 
 
 export const register = async(req: Request, res: Response, next: NextFunction) => {
@@ -39,6 +45,29 @@ export const login = async(req: Request, res: Response, next: NextFunction) => {
             isAdmin: user.is_admin
         })
 
+    }catch(error) {
+        next(error);
+    }
+}
+
+export const refresh = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const oldRefreshToken = req.cookies.refresh_token;
+        // console.log(oldRefreshToken);
+        // console.log(req.cookies);
+
+        if(!oldRefreshToken) {
+            throw new ApiError(401, "No Refresh Token provided");
+        }
+
+        const { newAccessToken, newRefreshToken } = await rotateRefreshToken(oldRefreshToken);
+
+        setAuthCookies(res, newAccessToken, newRefreshToken);
+
+        res.status(200).json({
+            message: "Token refreshed successfully"
+        });
+        
     }catch(error) {
         next(error);
     }
