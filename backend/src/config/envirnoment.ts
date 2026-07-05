@@ -37,11 +37,17 @@ if (!jwtSecret) {
   throw new Error("JWT_SECRET is required");
 }
 
+const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
+if (!refreshTokenSecret) {
+  throw new Error("REFRESH_TOKEN_SECRET is required");
+}
+
 export const config = {
   port: parsePort(process.env.PORT),
   nodeEnv,
   databaseUrl,
   jwtSecret,
+  refreshTokenSecret,
   isProduction: nodeEnv === 'production',
 } as const;
 

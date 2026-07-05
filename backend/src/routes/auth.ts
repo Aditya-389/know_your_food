@@ -4,10 +4,10 @@ const router = express.Router();
 
 router.post('/signin',  );
 
-router.post('/login', );
+// router.post('/login', );
 
-router.post('/refresh-token', );
+// router.post('/refresh-token', );
 
-router.post('/logout', );
+// router.post('/logout', );
 
 export default router;
