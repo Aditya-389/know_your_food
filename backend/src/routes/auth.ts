@@ -1,11 +1,15 @@
 import express from 'express';
+import { login, refresh, register } from '../controller/auth';
+
 
 const router = express.Router();
 
-router.post('/signin',  );
+router.post('/register',  register);
 
-router.post('/login', );
+router.post('/login', login);
 
-router.post('/logout', );
+router.post('/refresh-token', refresh);
+
+// router.post('/logout', );
 
 export default router;
