@@ -1,15 +1,10 @@
-import express from 'express';
-import authRoutes from './routes/auth';
+import { config } from './config/envirnoment'
+import app from './app'
 
-const app = express();
+const port = config.port;
 
-
-app.use('/auth', authRoutes);
-
-app.get('/', (req, res) => {
-    res.send("Helath check");
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
-
-export default app;
 
 
